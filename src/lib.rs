@@ -1,9 +1,11 @@
 use bevy::app::App;
 use bevy::prelude::*;
 
+mod actions;
 mod loading;
 mod player;
 
+use crate::actions::ActionsPlugin;
 use crate::loading::LoadingPlugin;
 use crate::player::PlayerPlugin;
 
@@ -22,7 +24,7 @@ pub struct GamePlugin;
 impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
         app.add_state::<GameState>()
-            .add_plugins((LoadingPlugin, PlayerPlugin))
+            .add_plugins((LoadingPlugin, PlayerPlugin, ActionsPlugin))
             .add_systems(OnEnter(GameState::Playing), spawn_camera);
 
         #[cfg(debug_assertions)]
