@@ -21,6 +21,9 @@ enum GameState {
 
 pub struct GamePlugin;
 
+#[derive(Component)]
+pub struct GameCamera;
+
 impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
         app.add_state::<GameState>()
@@ -35,5 +38,5 @@ impl Plugin for GamePlugin {
 }
 
 fn spawn_camera(mut commands: Commands) {
-    commands.spawn(Camera2dBundle::default());
+    commands.spawn(Camera2dBundle::default()).insert(GameCamera);
 }

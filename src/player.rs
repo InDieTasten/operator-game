@@ -1,4 +1,4 @@
-use crate::actions::Actions;
+use crate::{actions::Actions, GameCamera};
 use bevy::prelude::*;
 
 use crate::{loading::TextureAssets, GameState};
@@ -12,6 +12,10 @@ impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(OnEnter(GameState::Playing), spawn_player);
         app.add_systems(Update, move_player.run_if(in_state(GameState::Playing)));
+        app.add_systems(
+            Update,
+            follow_player_with_camera.run_if(in_state(GameState::Playing)),
+        );
     }
 }
 
@@ -43,4 +47,15 @@ fn move_player(
     for mut player_transform in &mut player_query {
         player_transform.translation += movement;
     }
+}
+
+type PlayerQuery<'w, 's> = Query<'w, 's, &'w Transform, With<Player>>;
+type CameraQuery<'w, 's> = Query<'w, 's, &'w mut Transform, With<GameCamera>>;
+
+fn follow_player_with_camera(mut set: ParamSet<(PlayerQuery, CameraQuery)>) {
+    // retrieves translation of the player
+    let target_translation = set.p0().single().translation;
+
+    // sets translation on the camera
+    set.p1().single_mut().translation = target_translation;
 }
