@@ -23,3 +23,10 @@ Objectives:
 - Charge ignition coil
 - Enable emergency beacon
 - Launch and escape
+
+Game over reasons:
+- Time running out and asteroid hitting
+- Inability to reach target due to low delta-v
+- Inability to reach target due to wrong nav data
+- Hypoxia due to missing cabin pressure
+- Explosion from engine exhaust lighting batteries or fuel canisters neat to the vessel
