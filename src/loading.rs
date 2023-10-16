@@ -17,4 +17,6 @@ impl Plugin for LoadingPlugin {
 pub struct TextureAssets {
     #[asset(path = "textures/player.png")]
     pub texture_player: Handle<Image>,
+    #[asset(path = "textures/pev.png")]
+    pub texture_pev: Handle<Image>,
 }
