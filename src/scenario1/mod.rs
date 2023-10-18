@@ -10,18 +10,12 @@ pub struct Scenario1Plugin;
 
 impl Plugin for Scenario1Plugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(OnEnter(GameState::Playing), spawn_scene);
-        app.add_systems(OnExit(GameState::Playing), clear_scene);
+        app.add_systems(OnEnter(GameState::Playing), spawn_scenario);
+        app.add_systems(OnExit(GameState::Playing), clear_scenario);
     }
 }
 
-fn clear_scene(mut commands: Commands, scenes: Query<Entity, With<SurfaceSceneRoot>>) {
-    for entity in scenes.iter() {
-        commands.entity(entity).despawn_recursive();
-    }
-}
-
-fn spawn_scene(mut commands: Commands, textures: Res<TextureAssets>) {
+fn spawn_scenario(mut commands: Commands, textures: Res<TextureAssets>) {
     commands
         .spawn(SpatialBundle::default())
         .insert(SurfaceSceneRoot)
@@ -50,4 +44,10 @@ fn spawn_scene(mut commands: Commands, textures: Res<TextureAssets>) {
                 })
                 .insert(PlanetEvacuationVessel);
         });
+}
+
+fn clear_scenario(mut commands: Commands, scenes: Query<Entity, With<SurfaceSceneRoot>>) {
+    for entity in scenes.iter() {
+        commands.entity(entity).despawn_recursive();
+    }
 }
