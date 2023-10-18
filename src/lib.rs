@@ -19,6 +19,7 @@ enum GameState {
     #[default]
     Loading,
     Playing,
+    Credits,
 }
 
 pub struct GamePlugin;
@@ -31,7 +32,11 @@ impl Plugin for GamePlugin {
         app.add_state::<GameState>()
             .add_plugins((LoadingPlugin, PlayerPlugin, ActionsPlugin))
             .add_plugins(Scenario1Plugin)
-            .add_systems(OnEnter(GameState::Playing), spawn_camera);
+            .add_systems(OnEnter(GameState::Playing), spawn_camera)
+            .add_systems(
+                Update,
+                navigate_credits.run_if(in_state(GameState::Playing)),
+            );
 
         #[cfg(debug_assertions)]
         {
@@ -42,4 +47,10 @@ impl Plugin for GamePlugin {
 
 fn spawn_camera(mut commands: Commands) {
     commands.spawn(Camera2dBundle::default()).insert(GameCamera);
+}
+
+fn navigate_credits(mut next_state: ResMut<NextState<GameState>>, keys: Res<Input<KeyCode>>) {
+    if keys.just_pressed(KeyCode::C) {
+        next_state.set(GameState::Credits);
+    }
 }
